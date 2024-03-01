@@ -14,7 +14,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
       <Routes>
-        <Route path='' element={<ProtectedRoute><InvoiceList /></ProtectedRoute>}>
+        <Route path='/' element={<ProtectedRoute><InvoiceList /></ProtectedRoute>}>
         </Route>
         <Route path='newInvoice' element={<ProtectedRoute><InvoiceForm /></ProtectedRoute>}>
         </Route>
@@ -22,9 +22,9 @@ function App() {
         </Route>
         <Route path='/:id/newItem' element={<ProtectedRoute><ItemForm /></ProtectedRoute>}>
         </Route>
-        <Route path='/user/signup' element={<RegisterPage />}>
+        <Route path='/signup' element={<RegisterPage />}>
         </Route>
-        <Route path='/user/login' element={<LoginPage />}>
+        <Route path='/login' element={<LoginPage />}>
         </Route>
       </Routes>
       </BrowserRouter>

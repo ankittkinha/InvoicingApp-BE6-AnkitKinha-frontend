@@ -1,24 +1,28 @@
 import { useEffect, useState } from 'react'
-import { NavLink } from 'react-router-dom'
 import Navbar from '../NavBar/Navbar'
 
 export default function InvoiceList() {
-  const [invoices, setInvoices] = useState([])
+  const [invoices, setInvoices] = useState([]);
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/invoices')
+    const token =localStorage.getItem("access_token");
+
+    fetch('http://127.0.0.1:8000/api/invoices/', {
+      headers: {Authorization: `Bearer ${token}`},
+    })
       .then((res) => res.json())
       .then((results) => {
-        setInvoices(results)
+        console.log("Result: " + results)
+        setInvoices(results);
         results.forEach((element) => {
           element.totalAmount = element.items.reduce(
             (total, item) =>
               Number(total) + Number(item.rate) * Number(item.quantity),
-            0,
-          )
-        })
+            0
+          );
+        });
         console.log(invoices)
-      })
-  }, [])
+      });
+  }, []);
 
   return (
     <div className="container">
@@ -36,6 +40,7 @@ export default function InvoiceList() {
         <tbody>
           {invoices.map((i) => (
             <tr>
+              {/* console.log(i) */}
               <th>{i.invoice_id}</th>
               <td>{i.client_name}</td>
               <td>{new Date(i.date).toDateString()}</td>

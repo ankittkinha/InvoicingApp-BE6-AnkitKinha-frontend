@@ -14,17 +14,16 @@ const LoginPage = () => {
     })
 
     const initialValues = {
-        email: "",
+        username: "",
         password: ""
     }
 
     const onSubmit = (values) => {
         // console.log(values)
-        axios.post("http://127.0.0.1:8000/api/user/login", values)
+        axios.post("http://localhost:8000/api/login/", values)
             .then((response) => {
-                console.log(response.data.message)
-                localStorage.setItem("token", response.data.token)
-                localStorage.setItem("user", JSON.stringify(response.data.user))
+                localStorage.setItem("access_token", response.data.access_token)
+                // localStorage.setItem("user", JSON.stringify(response.data.user))
                 setRequestResponse({
                     textMessage: "Login Succesful. Thank You",
                     alertClass: "alert alert-success"
@@ -39,7 +38,7 @@ const LoginPage = () => {
     }
 
     const validationSchema = Yup.object({
-        email: Yup.string().required("This is a required field.").email("Enter a valid email."),
+        username: Yup.string().required("This is a required field."),
         password: Yup.string().required("This is a required field.").min(6, "Password should be at least six characters long.")
     })
 
@@ -66,9 +65,9 @@ const LoginPage = () => {
                                     return (
                                         <Form onSubmit={formik.handleSubmit}>
                                             <div className="form-group">
-                                                <label htmlFor="email">Email</label>
-                                                <Field type="text" name="email" id="email" className={formik.errors.email && formik.touched.email ? "form-control is-invalid" : "form-control"} />
-                                                <ErrorMessage name="email">
+                                                <label htmlFor="username">Username</label>
+                                                <Field type="text" name="username" id="username" className={formik.errors.username && formik.touched.username ? "form-control is-invalid" : "form-control"} />
+                                                <ErrorMessage name="username">
                                                     {(errorMessage) => {
                                                         <small className="text-danger"> {errorMessage} </small>
                                                     }}
@@ -86,7 +85,7 @@ const LoginPage = () => {
                                                 </ErrorMessage>
                                             </div>
 
-                                            <input type="submit" style={{marginTop: "20px"}} value="Login" className="btn btn-primary btn-block" disabled={!formik.isValid} />
+                                            <input type="submit" value="Login" className="btn btn-primary btn-block" disabled={!formik.isValid} />
                                         </Form>
                                     )
                                 }
@@ -95,7 +94,7 @@ const LoginPage = () => {
                         </Formik>
 
                         <br />
-                        <p className="text-center">New User! <Link to="/user/signup" >Click Here</Link></p>
+                        <p className="text-center">New User! <Link to="/signup" >Click Here</Link></p>
                     </div>
                 </div>
                 <div className="col-md-3"></div>

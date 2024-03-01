@@ -8,12 +8,14 @@ export default function InvoiceForm() {
   const navigate = useNavigate()
 
   function handleSubmit() {
+    const token =localStorage.getItem("access_token");
     newInvoice.items = []
-    fetch('http://127.0.0.1:8000/api/invoices/new', {
+    fetch('http://127.0.0.1:8000/api/invoices/new/', {
       method: 'POST',
       body: JSON.stringify(newInvoice),
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
       },
     }).then((res) => navigate('/'))
   }
@@ -22,7 +24,7 @@ export default function InvoiceForm() {
     <div className="container">
       <Navbar />
       <div className="mb-3">
-        <label hmlFor="name" className="form-label">
+        <label htmlFor="name" className="form-label">
           Client Name
         </label>
         <input
@@ -36,7 +38,7 @@ export default function InvoiceForm() {
         ></input>
       </div>
       <div className="mb-3">
-        <label hmlFor="date" className="form-label">
+        <label htmlFor="date" className="form-label">
           Date
         </label>
         <input

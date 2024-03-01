@@ -1,4 +1,4 @@
-import { Link,useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styles from "./styles.module.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -8,8 +8,6 @@ import React, { useState } from "react";
 
 const RegisterPage = () => {
 
-    const navigate = useNavigate()
-    
     const [requestResponse, setRequestResponse] = useState({
         textMessage: "",
         alertClass: ""
@@ -18,24 +16,19 @@ const RegisterPage = () => {
     const initialValues = {
         name: "",
         email: "",
-        mobile: "",
+        username: "",
         password: ""
     }
 
     const onSubmit = (values) => {
-        // console.log(values)
-        axios.post("http://127.0.0.1:8000/api/user/signup", values)
+        console.log(values)
+        axios.post("http://localhost:8000/api/signup/", values)
             .then((response) => {
                 console.log(response.data)
-                console.log(response)
                 setRequestResponse({
                     textMessage: response.data.message,
                     alertClass: "alert alert-success"
                 })
-                setTimeout(() => {
-                    navigate("/user/login")
-                }, 3000)
-                
             }, (error) => {
                 console.log(error)
                 setRequestResponse({
@@ -49,7 +42,7 @@ const RegisterPage = () => {
     const validationSchema = Yup.object({
         name: Yup.string().required("This is a required field."),
         email: Yup.string().required("This is a required field.").email("Enter a valid email."),
-        mobile: Yup.string().required("This is a required field."),
+        username: Yup.string().required("This is a required field."),
         password: Yup.string().required("This is a required field.").min(6, "Password should be at least six characters long.")
     })
 
@@ -73,9 +66,14 @@ const RegisterPage = () => {
                         <hr />
                         <form onSubmit={formik.handleSubmit}>
                             <div className="form-group">
-                                <label htmlFor="name">First Name</label>
-                                <input type="text" name="name" id="name" values={formik.values.name} onChange={formik.handleChange} onBlur={formik.handleBlur} className={formik.errors.name && formik.touched.name ? "form-control is-invalid" : "form-control"} />
+                                <label htmlFor="name">Name</label>
+                                <input type="name" name="name" id="name" values={formik.values.name} onChange={formik.handleChange} onBlur={formik.handleBlur} className={formik.errors.name && formik.touched.name ? "form-control is-invalid" : "form-control"} />
                                 {formik.errors.name && formik.touched.name ? (<small className="text-danger"> {formik.errors.name} </small>) : null}
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="username">Username</label>
+                                <input type="text" name="username" id="username" values={formik.values.username} onChange={formik.handleChange} onBlur={formik.handleBlur} className={formik.errors.username && formik.touched.username ? "form-control is-invalid" : "form-control"} />
+                                {formik.errors.username && formik.touched.username ? (<small className="text-danger"> {formik.errors.username} </small>) : null}
                             </div>
 
                             <div className="form-group">
@@ -84,11 +82,7 @@ const RegisterPage = () => {
                                 {formik.errors.email && formik.touched.email ? (<small className="text-danger"> {formik.errors.email} </small>) : null}
                             </div>
 
-                            <div className="form-group">
-                                <label htmlFor="mobile">Mobile</label>
-                                <input type="text" name="mobile" id="mobile" values={formik.values.mobile} onChange={formik.handleChange} onBlur={formik.handleBlur} className={formik.errors.mobile && formik.touched.mobile ? "form-control is-invalid" : "form-control"} />
-                                {formik.errors.mobile && formik.touched.mobile ? (<small className="text-danger"> {formik.errors.mobile} </small>) : null}
-                            </div>
+
 
                             <div className="form-group">
                                 <label htmlFor="password">Password</label>
@@ -96,11 +90,11 @@ const RegisterPage = () => {
                                 {formik.errors.password && formik.touched.password ? (<small className="text-danger"> {formik.errors.password} </small>) : null}
                             </div>
 
-                            <input type="submit" style={{marginTop: "20px"}} value="Register" className="btn btn-primary btn-block" disabled={!formik.isValid} />
+                            <input type="submit" value="Register" className="btn btn-primary btn-block" disabled={!formik.isValid} />
                         </form>
 
                         <br />
-                        <p className="text-center" >Already Registered? <Link to="/user/login" >Click Here</Link></p>
+                        <p className="text-center">Already Registered? <Link to="/login" >Click Here</Link></p>
                     </div>
                 </div>
                 <div className="col-md-3"></div>
